@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <title> Loan Calculator </title>
+    <script>
+    /* Input: User will enter the amount borrowed, annual rate, the number of
+            years, the payments per year, and the number of payments
+            made to date.
+     * Processing: Calculate the rate per period, the total amount of periods,
+            and then use that informations to calculate the amount of each
+            payment and the balance left on the loan.
+     * Output: Display the payment amount and loan balance in money with two
+              decimals.
+     */
+
+     function doPayment(){
+       var principalB = parseFloat(document.getElementById("principal").value);
+       var annualR = parseFloat(document.getElementById("annualRate").value);
+       var NumYears = parseFloat(document.getElementById("years").value);
+       var paymentsYear = parseFloat(document.getElementById("payments").value);
+       var result = computePayment(principalB, annualR, NumYears, paymentsYear);
+       document.getElementById('output1').innerHTML = "$ " + result.toFixed(2);
+     }
+
+     function computePayment(principal, annualRate, years, periodsPerYear) {
+      r = annualRate / periodsPerYear;
+      n = years * periodsPerYear;
+      p = (principal * r) / (1 - Math.pow((1 + r), -Math.abs(n)));
+      return p;
+     }
+
+      function doBalance(){
+       var principalB = parseFloat(document.getElementById("principal").value);
+       var annualR = parseFloat(document.getElementById("annualRate").value);
+       var NumYears = parseFloat(document.getElementById("years").value);
+       var paymentsYear = parseFloat(document.getElementById("payments").value);
+       var paymentsMade = parseFloat(document.getElementById("paid").value);
+       var result = computeBalance(principalB, annualR, NumYears, paymentsYear, paymentsMade);
+       document.getElementById('output2').innerHTML = "$ " + result.toFixed(2);
+     }
+
+     function computeBalance(principal, annualRate, years, periodsPerYear, numberOfPaymentsPaidToDate){
+       r = annualRate / periodsPerYear;
+       n = years * periodsPerYear;
+       p = (principal * r) / (1 - Math.pow((1 + r), -Math.abs(n)));
+       b = (principal * Math.pow((1 + r), numberOfPaymentsPaidToDate)) -
+              (p * ((Math.pow((1 + r), numberOfPaymentsPaidToDate) - 1)) / r);
+       return b;
+     }
+
+    </script>
+  </head>
+
+  <body>
+    <h1> Loan Calculator </h1>
+    Amount borrowed (principal) <input type="text" id="principal"><br>
+    Annual interest rate (example: .065) <input type="text" id="annualRate"><br>
+    Number of years <input type="text" id="years"><br>
+    Payments per year <input type="text" id="payments"><br>
+    <button type="button" onclick="doPayment()">Compute payment</button> <br>
+    <div id="output1"></div>
+    Number of payments paid to date <input type="text" id="paid"><br>
+    <button type="button" onclick="doBalance()">Compute payoff amount</button> <br>
+    <div id="output2"></div>
+  </body>
+</html>
